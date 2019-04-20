@@ -3,6 +3,8 @@ import java.io.*;
 import java.util.*;
 
 class codechef {
+    public static boolean[] visited=null;
+
     public static void main(String[] args)throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -10,35 +12,39 @@ class codechef {
         while (test-->0) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int n = Integer.parseInt(st.nextToken());
-            int k = Integer.parseInt(st.nextToken());
+            int x = Integer.parseInt(st.nextToken());
+            visited = new boolean[n+1];
+            int[] arr = new int[n+1];
             st = new StringTokenizer(br.readLine());
             int i=1;
-            values = new int[n+1];
             while (st.hasMoreTokens()){
-                values[i++] = Integer.parseInt(st.nextToken());
+                arr[i++] = Integer.parseInt(st.nextToken());
             }
-
-            map = new HashMap<>();
-            for(i=1;i<=n;i++){
-                map.put(i,new LinkedList<>());
-            }
-            i=1;
-            while (i<n){
+            ArrayList<Integer>[] list = new ArrayList[n+1];
+            for(i=0;i<=n;i++)
+                list[i] = new ArrayList<>();
+            for(i=0;i<n-1;i++){
                 st = new StringTokenizer(br.readLine());
-                int parent = Integer.parseInt(st.nextToken());
-                int child = Integer.parseInt(st.nextToken());
-                LinkedList<Integer> temp = map.get(parent);
-                temp.add(child);
-                map.put(parent,temp);
+                int u = Integer.parseInt(st.nextToken());
+                int v = Integer.parseInt(st.nextToken());
+                list[u].add(v);
+                list[v].add(u);
             }
-
-            sum = new long[n+1];
-            sumCheck = new boolean[n+1];
-            long total = findSum(1);
-            
-
+            bw.write(dfs(1,list,arr,x)+"\n");
         }
         bw.flush();
+    }
+
+    private static long dfs(int v,ArrayList<Integer>[] list,int[] arr,int x){
+        long ans = 0;
+        visited[v] = true;
+        for(int u:list[v]){
+            if(visited[u])
+                continue;
+            ans +=dfs(u,list,arr,x);
+        }
+        ans+=arr[v];
+        return Math.max(ans,-x);
     }
 
     private static long findSum(int node){

@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class codeforces{
 
@@ -10,59 +8,32 @@ public class codeforces{
 
 
     public static void main(String[] args)throws IOException {
-
+        int n = Integer.parseInt(br.readLine());
+        int[] operation = new int[n+1];
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
-        int i;
+        int i=1;
+        while (st.hasMoreTokens()) {
+            operation[i++] = Integer.parseInt(st.nextToken());
+        }
 
-        int[] students = new int[n];
-        int[] school = new int[n];
-        int[] choosen = new int[k];
-        int[] max = new int[m];
-
-        st = new StringTokenizer(br.readLine());
-        i=0;
-        while (st.hasMoreTokens()){
-            students[i++] = Integer.parseInt(st.nextToken());
+        ArrayList<Integer>[] list = new ArrayList[n+1];
+        for (i=1;i<=n;i++){
+            list[i] = new ArrayList<>();
         }
 
         st = new StringTokenizer(br.readLine());
-        i=0;
-        while (st.hasMoreTokens()){
-            school[i++] = Integer.parseInt(st.nextToken());
+        i = 2;
+        while (st.hasMoreTokens()) {
+            int v = Integer.parseInt(st.nextToken());
+            list[v].add(i);
+            i++;
         }
 
-        st = new StringTokenizer(br.readLine());
-        i=0;
-        while (st.hasMoreTokens()){
-            choosen[i++] = Integer.parseInt(st.nextToken());
-        }
-
-        for (i=0;i<n;i++){
-            max[school[i]-1] = Math.max(max[school[i]-1],students[i]);
-        }
-
-        int count=0;
-        for(i=0;i<k;i++){
-            int index = linearSearch(students,choosen[i]);
-            int ischool = school[index];
-            if(max[ischool-1]>choosen[i]){
-                count++;
-            }
-        }
-        bw.write(count+"\n");
+        bw.write(dfs(1,list,operation)+"\n");
         bw.flush();
     }
 
-
-    private static int linearSearch(int[] arr, int key){
-        for(int i=0;i<arr.length;i++){
-            if(arr[i]==key){
-                return i;
-            }
-        }
-        return -1;
+    private static int dfs(int v,ArrayList<Integer>[] list, int[] operation){
+        return 0;
     }
 }
